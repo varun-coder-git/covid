@@ -31,15 +31,13 @@ export class AppComponent {
   id = '';
   todayDate:any;
   covidForm!: FormGroup ;
-  user_id: any;
-  token: any;
-  DATA: any;
-  complaintList: any;
+  DATA:any;
+  covidList: any;
   searchText: any;
   searchValue: any;
-count:any=0;
-  complaintColumns = ['no','name', 'complaint_subject', 'complaint_id', 'complaint_type']
-  complaintTableDataSource = new MatTableDataSource<Element>();
+  count:any=0;
+  covidColumns = ['no','name', 'complaint_subject', 'complaint_id', 'complaint_type']
+  covidTableDataSource = new MatTableDataSource<Element>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -54,14 +52,12 @@ count:any=0;
     window.scrollTo(0, 0);
    
     this.todayDate=this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    this.user_id = localStorage.getItem('user_id');
-    this.token = localStorage.getItem('token');
+
     this.DATA = {
-      'user_id': this.user_id,
-      'token': this.token
+   
     }
     this.initForm();
-    this.getComplaint();
+    this.getDate();
     
   }
 
@@ -79,7 +75,7 @@ count:any=0;
   get today() { return new Date() }
 
   methodFilterPredicate() {
-    this.complaintTableDataSource.filterPredicate =
+    this.covidTableDataSource.filterPredicate =
 
       (data: Element, filters: string) => {
         console.log("data", data)
@@ -102,69 +98,26 @@ count:any=0;
         return matchFilter.every(Boolean); // AND toLowerCase()
       }
   }
+ 
   getDate() {
-   
-    let date = this.covidForm.controls['date'].value;
-    this.service.login(this.DATA,date).subscribe((res) => {
-    
-      this.complaintList = res;
-      console.log(this.complaintList);
-      this.complaintTableDataSource = new MatTableDataSource<any>(this.complaintList.centers);
-      this.complaintTableDataSource.sortingDataAccessor = (data: any, sortHeaderId: any): string => {
-        if (typeof data[sortHeaderId] === 'string') {
-          return data[sortHeaderId].toLocaleLowerCase();
-        }
-      
-        return data[sortHeaderId];
-      };
-     this.complaintTableDataSource.sort = this.sort;
-      this.complaintTableDataSource.paginator = this.paginator;
-
-    }
-    ,
-    
-  (err ) =>
-   {
-
-    if(err == "Data Not Found"){
-          // this.spinner.hide();
-      this.complaintList=undefined;
-      this.complaintTableDataSource = new MatTableDataSource<any>(this.complaintList);
-      let searchText = (<HTMLInputElement>document.getElementById("search")).value;
-      this.complaintTableDataSource.sort = this.sort;
-      this.complaintTableDataSource.paginator = this.paginator;
-      this.applyFilter();
-    }
-    else{
-        //    this.spinner.hide();
-        //  this.toastr.warning("Oops...Something went wrong!");
-    }
-    
-    // this.error = err.message;
-   // console.log("message",err.message);
-     
-   });
-
-  }
-  getComplaint() {
   
     
     let date = this.datepipe.transform(this.covidForm.controls['dateInput'].value, 'dd-MM-yyyy');
     console.log("date",date);
     this.service.login(this.DATA,date).subscribe((res) => {
     
-      this.complaintList = res;
-      console.log(this.complaintList);
-      this.complaintTableDataSource = new MatTableDataSource<any>(this.complaintList.centers);
-      this.complaintTableDataSource.sortingDataAccessor = (data: any, sortHeaderId: any): string => {
+      this.covidList = res;
+      console.log(this.covidList);
+      this.covidTableDataSource = new MatTableDataSource<any>(this.covidList.centers);
+      this.covidTableDataSource.sortingDataAccessor = (data: any, sortHeaderId: any): string => {
         if (typeof data[sortHeaderId] === 'string') {
           return data[sortHeaderId].toLocaleLowerCase();
         }
       
         return data[sortHeaderId];
       };
-     this.complaintTableDataSource.sort = this.sort;
-      this.complaintTableDataSource.paginator = this.paginator;
+     this.covidTableDataSource.sort = this.sort;
+      this.covidTableDataSource.paginator = this.paginator;
 
     }
     ,
@@ -174,11 +127,11 @@ count:any=0;
 
     if(err == "Data Not Found"){
           // this.spinner.hide();
-      this.complaintList=undefined;
-      this.complaintTableDataSource = new MatTableDataSource<any>(this.complaintList);
+      this.covidList=undefined;
+      this.covidTableDataSource = new MatTableDataSource<any>(this.covidList);
       let searchText = (<HTMLInputElement>document.getElementById("search")).value;
-      this.complaintTableDataSource.sort = this.sort;
-      this.complaintTableDataSource.paginator = this.paginator;
+      this.covidTableDataSource.sort = this.sort;
+      this.covidTableDataSource.paginator = this.paginator;
       this.applyFilter();
     }
     else{
@@ -186,8 +139,7 @@ count:any=0;
         //  this.toastr.warning("Oops...Something went wrong!");
     }
     
-    // this.error = err.message;
-   // console.log("message",err.message);
+ 
      
    });
 
@@ -198,8 +150,8 @@ count:any=0;
 
 
   applyFilter() {
-    this.complaintTableDataSource.filter = this.searchText.trim().toLowerCase();
-   // this.methodFilterPredicate();
+    this.covidTableDataSource.filter = this.searchText.trim().toLowerCase();
+  
   }
 
 }
