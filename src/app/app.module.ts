@@ -43,6 +43,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent
@@ -55,11 +56,11 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     BrowserModule,
 
-    // ToastrModule.forRoot({
-    //   timeOut: 3000,
-    //   positionClass: "toast-top-center",
-    //   preventDuplicates: false
-    // }),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: "toast-top-center",
+      preventDuplicates: false
+    }),
     AppRoutingModule,
 
     BrowserAnimationsModule,
