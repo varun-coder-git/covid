@@ -65,11 +65,10 @@ export class AppComponent {
   
     
     let date = this.datepipe.transform(this.covidForm.controls['dateInput'].value, 'dd-MM-yyyy');
-    console.log("date",date);
     this.service.login(this.DATA,date).subscribe((res) => {
     
       this.covidList = res;
-      console.log(this.covidList);
+      
       this.covidTableDataSource = new MatTableDataSource<any>(this.covidList.centers);
       this.covidTableDataSource.sortingDataAccessor = (data: any, sortHeaderId: any): string => {
         if (typeof data[sortHeaderId] === 'string') {
